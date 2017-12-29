@@ -1,21 +1,33 @@
 package andy_stefan.gomoku_android;
 
+import android.util.Log;
+
 /**
  * Created by Andy on 12/29/2017.
  */
 
 public class GameState {
-    public final int MAX_BOARD_SIZE = 15;
+    public final static int MAX_BOARD_SIZE = 15;
+    private int currentPlayer = 1;
+    private int boardSize;
 //Define what is the state of the game
-    int [][] board = new int[MAX_BOARD_SIZE][MAX_BOARD_SIZE];
+    public int [][] board;
     //0 = empty, 1 = white, 2=black
-    int numPieces = 0;
+    private int numPieces = 0;
+
+    // initialize board array with given dimensions
+    public GameState(int boardSize) {
+        this.boardSize = boardSize;
+        board = new int[boardSize][boardSize];
+    }
 
     //define a makeMove function:
-    public boolean makeMove(int i, int j, int color){
+    public boolean makeMove(int i, int j){
+        Log.d("GameState", "Making Move at " + i + ", " + j);
         if(validMove(i,j)){
-            board[i][j]=color;
+            board[i][j] = currentPlayer;
             numPieces+=1;
+            currentPlayer = (currentPlayer == 1 ? 2 : 1);
             return true;
         }
         else{

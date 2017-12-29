@@ -25,7 +25,9 @@ public class GameView extends View {
     // row and col of selected tile
     private int selectedRow, selectedCol;
     // board is boardSize x boardSize tiles
-    private int boardSize = 9;
+    private int boardSize = 15;
+    // handles game logic
+    private GameState gameState = new GameState(boardSize);
     private Paint paint = new Paint();
 
     public GameView(Context context) {
@@ -46,11 +48,14 @@ public class GameView extends View {
                 y = event.getY();
                 break;
             case MotionEvent.ACTION_UP:
-                selection = true;
                 x = event.getX();
                 y = event.getY();
                 selectedRow = (int) (event.getY() / tileHeight);
                 selectedCol = (int) (event.getX() / tileWidth);
+                if (selectedRow < boardSize && selectedCol < boardSize) {
+                    selection = true;
+                    gameState.makeMove(selectedRow, selectedCol);
+                }
                 Log.d("GameView", "Touch event at " + x + ", " + y + " converted to selection of " + selectedRow + ", " + selectedCol);
                 invalidate();
                 break;
@@ -85,6 +90,19 @@ public class GameView extends View {
         for (int j = 0; j <= boardSize; j++) {
             x = j * tileWidth;
             canvas.drawLine(x, 0, x, boardHeight, paint);
+        }
+
+        paint.setStyle(Paint.Style.FILL);
+        for (int i = 0; i < boardSize; i++) {
+            for (int j = 0; j < boardSize; j++) {
+                if (gameState.board[i][j] == 1) {
+                    paint.setColor(Color.WHITE);
+                    canvas.drawRect(j * tileWidth, i * tileHeight, (j + 1) * tileWidth, (i + 1) * tileHeight, paint);
+                } else if (gameState.board[i][j] == 2) {
+                    paint.setColor(Color.GREEN);
+                    canvas.drawRect(j * tileWidth, i * tileHeight, (j + 1) * tileWidth, (i + 1) * tileHeight, paint);
+                }
+            }
         }
     }
 

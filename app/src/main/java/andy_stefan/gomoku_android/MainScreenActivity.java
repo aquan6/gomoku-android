@@ -28,6 +28,8 @@ public class MainScreenActivity extends AppCompatActivity {
         storeButton = (Button) findViewById(R.id.store_button);
     }
 
+    //Todo: Add settings button
+
     public void onPlayPressed(View view) {
         Log.d("MainScreen", "Play button pressed");
         startActivity(new Intent(this, GameActivity.class));

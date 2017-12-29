@@ -1,6 +1,8 @@
 package andy_stefan.gomoku_android;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -29,14 +31,22 @@ public class GameView extends View {
     // handles game logic
     private GameState gameState = new GameState(boardSize);
     private Paint paint = new Paint();
+    // image of the game board
+    private Bitmap gameBoardBmp;
 
     public GameView(Context context) {
         super(context);
-    }
+        init(context);
+    } // todo: variable R.drawable id that can be used for the board. use attributes
 
     public GameView(Context context, AttributeSet attributes) {
         super(context, attributes);
-//        setFocusable(true);
+        init(context);
+    }
+
+    // initializes resources required
+    private void init(Context context) {
+        gameBoardBmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.classic_board);
     }
 
     @Override
@@ -104,6 +114,8 @@ public class GameView extends View {
                 }
             }
         }
+
+        canvas.drawBitmap(gameBoardBmp, 0, 0, null);
     }
 
     @Override
@@ -113,5 +125,7 @@ public class GameView extends View {
         Log.d("HealthBarView.java", "Size changed to " + boardWidth + "," + boardHeight);
         tileWidth = boardWidth / boardSize;
         tileHeight = boardHeight / boardSize;
+        // scale image of board to the correct size, but keep it square
+        gameBoardBmp = Bitmap.createScaledBitmap(gameBoardBmp, boardWidth, boardWidth, false);
     }
 }

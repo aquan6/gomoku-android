@@ -29,10 +29,12 @@ public class MainScreenActivity extends AppCompatActivity {
 
     public void onStatsPressed(View view) {
         Log.d("MainScreen", "Stats button pressed");
+        startActivity(new Intent(this, StatsActivity.class));
     }
 
     public void onStorePressed(View view) {
         Log.d("Mainscreen", "Store button pressed");
+        startActivity(new Intent(this, StoreActivity.class));
     }
 
 

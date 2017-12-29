@@ -20,6 +20,14 @@
             android:name=".GameActivity"
             android:label="@string/title_activity_game"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".StatsActivity"
+            android:label="StatsActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".StoreActivity"
+            android:label="StoreActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

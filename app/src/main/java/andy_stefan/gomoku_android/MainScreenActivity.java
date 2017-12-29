@@ -3,6 +3,7 @@ package andy_stefan.gomoku_android;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +16,11 @@ public class MainScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen);
+
+        //For formatting the images
+        DisplayMetrics displaymetrics = getResources().getDisplayMetrics();
+        int width= displaymetrics.widthPixels;
+        int height = displaymetrics.heightPixels;
 
         // links java UI elements to main_screen.xml view elements
         playButton = (Button) findViewById(R.id.play_button);

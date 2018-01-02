@@ -5,25 +5,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="andy_stefan.gomoku_android.MainScreenActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="1">
 
 
     <!--android:layout_height="275dp"-->
+
+    <ImageButton
+        android:id="@+id/image_button_settings"
+        android:layout_width="69dp"
+        android:layout_height="49dp"
+        android:scaleType="fitXY"
+        android:layout_gravity="right"
+        android:onClick="onSettingsPressed"
+        app:srcCompat="@drawable/settings"
+        android:layout_weight="0.28" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="275dp"
-
         android:src="@drawable/title_img" />
+
 
     <Button
         android:id="@+id/play_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Play"
         android:layout_gravity="center_horizontal"
-        android:onClick="onPlayPressed"/>
+        android:onClick="onPlayPressed"
+        android:text="Play" />
 
     <Button
         android:id="@+id/stats_button"

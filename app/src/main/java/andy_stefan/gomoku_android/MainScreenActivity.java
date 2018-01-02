@@ -7,10 +7,12 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 public class MainScreenActivity extends AppCompatActivity {
 
     private Button playButton, statsButton, storeButton;
+    private ImageButton settingsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,9 +28,13 @@ public class MainScreenActivity extends AppCompatActivity {
         playButton = (Button) findViewById(R.id.play_button);
         statsButton = (Button) findViewById(R.id.stats_button);
         storeButton = (Button) findViewById(R.id.store_button);
+        settingsButton = (ImageButton) findViewById(R.id.image_button_settings);
     }
 
-    //Todo: Add settings button
+    public void onSettingsPressed(View view) {
+        Log.d("Mainscreen", "Settings button pressed");
+        startActivity(new Intent(this, SettingsActivity.class));
+    }
 
     public void onPlayPressed(View view) {
         Log.d("MainScreen", "Play button pressed");

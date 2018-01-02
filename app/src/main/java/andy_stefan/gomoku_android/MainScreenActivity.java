@@ -32,7 +32,7 @@ public class MainScreenActivity extends AppCompatActivity {
     }
 
     public void onSettingsPressed(View view) {
-        Log.d("Mainscreen", "Settings button pressed");
+        Log.d("MainScreen", "Settings button pressed");
         startActivity(new Intent(this, SettingsActivity.class));
     }
 

@@ -13,13 +13,12 @@
 
     <ImageButton
         android:id="@+id/image_button_settings"
-        android:layout_width="69dp"
-        android:layout_height="49dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:scaleType="fitXY"
         android:layout_gravity="right"
         android:onClick="onSettingsPressed"
-        app:srcCompat="@drawable/settings"
-        android:layout_weight="0.28" />
+        app:srcCompat="@drawable/settings" />
 
     <ImageView
         android:id="@+id/imageView"

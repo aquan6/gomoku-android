@@ -1,10 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context="andy_stefan.gomoku_android.StoreActivity"
+    android:orientation="vertical"
+    android:weightSum="1">
 
-    <TextView
+
+<TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Store goes here!"/>
+        android:text="Store: Backgrounds"/>
+
+    <TextView
+        android:id="@+id/Skyscraper_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="\nSkyScraper Background.........................................300 gold" />
+
+    <ImageButton
+        android:id="@+id/skyscraper_button"
+        android:layout_width="334dp"
+        android:layout_height="148dp"
+        android:scaleType="fitXY"
+        android:layout_gravity="center_horizontal"
+        android:onClick="onSkyscraperPressed"
+        android:src="@drawable/skyscraper" />
+
+
+    <TextView
+        android:id="@+id/Volcano_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="\nVolcano Background...........................................300 gold" />
+
+    <ImageButton
+        android:id="@+id/volcano_button"
+        android:layout_width="334dp"
+        android:layout_height="148dp"
+        android:scaleType="fitXY"
+        android:layout_gravity="center_horizontal"
+        android:onClick="onVolcanoPressed"
+        android:src="@drawable/volcano" />
+
+
+    <TextView
+        android:id="@+id/rainforest_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="\nRainforest Background..........................................300 gold" />
+
+
+    <ImageButton
+        android:id="@+id/rainforest_button"
+        android:layout_width="334dp"
+        android:layout_height="148dp"
+        android:scaleType="fitXY"
+        android:layout_gravity="center_horizontal"
+        android:onClick="onRainforestPressed"
+        android:src="@drawable/rainforest" />
 </LinearLayout>

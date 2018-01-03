@@ -113,6 +113,7 @@ public class GameView extends View {
                 if (selectedRow > -1 && selectedCol > -1) {
                     selection = true;
                     gameState.makeMove(selectedRow, selectedCol);
+                    Log.d("GameView", "Saved Game state is " + gameState.saveToString());
                 }
                 Log.d("GameView", "Touch event at " + x + ", " + y + " converted to selection of " + selectedRow + ", " + selectedCol);
                 invalidate();

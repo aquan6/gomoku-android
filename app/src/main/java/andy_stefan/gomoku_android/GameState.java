@@ -2,11 +2,37 @@ package andy_stefan.gomoku_android;
 
 import android.util.Log;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Created by Andy on 12/29/2017.
  */
 
 public class GameState {
+
+    // represents a piece moved onto the board. Stores the row and column defining the exact
+    // place on the board.
+    public static class Move {
+        public int row, col;
+
+        public Move(int row, int col) {
+            this.row = row;
+            this.col = col;
+        }
+
+        // writes the move to a String that can be restored via restoreFromString()
+        // simply equal to row and column, each of which will not be more than one character
+        public String saveToString() {
+            return Integer.toString(row) + Integer.toString(col);
+        }
+
+        // creates Move from String
+        public static Move restoreFromString(String savedMove) {
+            return new Move((int) savedMove.charAt(0), (int) savedMove.charAt(1));
+        }
+    }
+
     public final static int MAX_BOARD_SIZE = 15;
     private int currentPlayer = 1;
     private int boardSize;
@@ -15,10 +41,12 @@ public class GameState {
     private PieceType piecePlayer1 = PieceType.CLASSIC_WHITE;
     private PieceType piecePlayer2 = PieceType.CLASSIC_BLACK;
 
-    //Define what is the state of the game
+    // id used to save and restore this game
+    private int gameId;
+    // represents pieces on the board. 0 = empty, 1 = white, 2 = black
     public int [][] board;
-    //0 = empty, 1 = white, 2=black
-    private int numPieces = 0;
+    // moves that have been played so far in the game
+    List<Move> playedMoves = new LinkedList<>();
 
     // initialize board array with given dimensions
     public GameState(int boardSize) {
@@ -26,30 +54,30 @@ public class GameState {
         board = new int[boardSize][boardSize];
     }
 
-    //define a makeMove function:
+    public boolean makeMove(Move m) {
+        return makeMove(m.row, m.col);
+    }
+
+    // adds a piece to the board, played by currentPlayer
     public boolean makeMove(int i, int j){
         Log.d("GameState", "Making Move at " + i + ", " + j);
         if(validMove(i,j)){
             board[i][j] = currentPlayer;
-            numPieces+=1;
+            playedMoves.add(new Move(i, j));
             currentPlayer = (currentPlayer == 1 ? 2 : 1);
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
 
-    //Define Valid Moves
+    // checks whether a piece can be placed at (i, j) by making sure there isn't already a piece there
     public boolean validMove(int i, int j) {
-        if(board[i][j] != 0) {
-            return false;
-        }
-        return true;
+        return board[i][j] == 0;
     }
 
     //Define Whether the game is over
-    public boolean checkGameOver(int i, int j, int color) {
+    public boolean isGameOver(int i, int j, int color) {
         int [] rowSums = {1,1,1,1}; //horizontal, vertical, topLeftDia, botLeftDia
         //Check each direction
         //Left
@@ -140,4 +168,36 @@ public class GameState {
         }
     }
 
+    /*
+    A GameState is saved in the following format:
+    BoardType toString()
+    player1 PieceType toString()
+    player2 PieceType toString()
+    [line-separated Moves]
+     */
+    // saves current game state to a string, that can be restored later
+    public String saveToString() {
+        String saved = "";
+        saved += boardType.toString() + "\n";
+        saved += piecePlayer1.toString() + "\n";
+        saved += piecePlayer2.toString() + "\n";
+        for (Move m : playedMoves) {
+            saved += m.saveToString() + "\n";
+        }
+        return saved;
+    }
+
+    // restores game from given String
+    public static GameState restoreFromString(String savedGame) throws IllegalArgumentException {
+        GameState restored = new GameState(19);
+        // split into lines
+        String[] lines = savedGame.split("\n");
+        restored.boardType = BoardType.valueOf(lines[0]);
+        restored.piecePlayer1 = PieceType.valueOf(lines[1]);
+        restored.piecePlayer2 = PieceType.valueOf(lines[2]);
+        for (int i = 3; i < lines.length; i++) {
+            restored.playedMoves.add(Move.restoreFromString(lines[i]));
+        }
+        return restored;
+    }
 }

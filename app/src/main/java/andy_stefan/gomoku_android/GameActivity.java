@@ -31,7 +31,7 @@ public class GameActivity extends AppCompatActivity {
         // read configuration from the Bundle
         Bundle args = getIntent().getExtras();
 
-        try {
+        try { // todo: set this stuff on GameState, then call GameView.setGameState()
             gameView.setGameBoard(BoardType.valueOf(args.getString(BOARDTYPE_KEY)));
             gameView.setPlayer1Piece(PieceType.valueOf(args.getString(PLAYER_1_PIECE_TYPE_KEY)));
             gameView.setPlayer2Piece(PieceType.valueOf(args.getString(PLAYER_2_PIECE_TYPE_KEY)));

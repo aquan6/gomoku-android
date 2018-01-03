@@ -26,12 +26,15 @@ public class GameView extends View {
     // row and col of selected tile
     private int selectedRow, selectedCol;
     // board is boardSize x boardSize tiles
-    private int boardSize = 15;
+    private int boardSize = 19;
     // handles game logic
     private GameState gameState = new GameState(boardSize);
-    private Paint paint = new Paint();
-    // image of the game board
-    private Bitmap gameBoardBmp;
+    // board and pieces being used
+    private BoardType boardType = BoardType.CLASSIC;
+    private PieceType player1Piece = PieceType.CLASSIC_WHITE;
+    private PieceType player2Piece = PieceType.CLASSIC_BLACK;
+    // image of board background, board overlay, and pieces
+    private Bitmap gameBoardBmp, boardOverlayBmp, player1PieceBmp, player2PieceBmp;
 
     public GameView(Context context) {
         super(context);
@@ -45,7 +48,35 @@ public class GameView extends View {
 
     // initializes resources required
     private void init(Context context) {
-        gameBoardBmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.classic_board);
+        gameBoardBmp = BitmapFactory.decodeResource(context.getResources(), boardType.getDrawableId());
+        boardOverlayBmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.board_lines);
+        player1PieceBmp = BitmapFactory.decodeResource(context.getResources(), player1Piece.getDrawableId());
+        player2PieceBmp = BitmapFactory.decodeResource(context.getResources(), player2Piece.getDrawableId());
+    }
+
+    // convert coordinate on canvas to tile. Returns -1 if no tile was selected
+    private int canvasToTileX(float x) {
+        if (x < 27 || x > 453) {
+            return -1;
+        } else {
+            return (int) ((x - 27) / 25);
+        }
+    }
+
+    private int canvasToTileY(float y) {
+        if (y < 27 || y > 453) {
+            return -1;
+        } else {
+            return (int) ((y - 27) / 25);
+        }
+    }
+
+    private float tileToCanvasX(int x) {
+        return 39 + 25 * x;
+    }
+
+    private int tileToCanvasY(int y) {
+        return 39 + 25 * y;
     }
 
     @Override
@@ -59,9 +90,9 @@ public class GameView extends View {
             case MotionEvent.ACTION_UP:
                 x = event.getX();
                 y = event.getY();
-                selectedRow = (int) (event.getY() / tileHeight);
-                selectedCol = (int) (event.getX() / tileWidth);
-                if (selectedRow < boardSize && selectedCol < boardSize) {
+                selectedRow = canvasToTileY(event.getY());
+                selectedCol = canvasToTileX(event.getX());
+                if (selectedRow > -1 && selectedCol > -1) {
                     selection = true;
                     gameState.makeMove(selectedRow, selectedCol);
                 }
@@ -74,57 +105,40 @@ public class GameView extends View {
 
     @Override
     public void onDraw(Canvas canvas) {
-        paint.setColor(Color.RED);
-        paint.setStyle(Paint.Style.FILL);
-        canvas.drawRect(0, 0, boardWidth, boardHeight, paint);
+        /*
+        The following info is used to calculate positions: todo: relative calculations
+        Gridlines are 2px thick
+        Grid starts at (14, 14)
+        Tiles are 23*23px (excluding grid lines)
+        */
 
-        // fill in selected tile
-        if (selection) {
-            Log.d("GameView", "Drawing Selection");
-            paint.setColor(Color.CYAN);
-            canvas.drawRect(selectedCol * tileWidth, selectedRow * tileHeight,
-                    (selectedCol + 1) * tileWidth, (selectedRow + 1) * tileHeight, paint);
-        }
+        canvas.drawBitmap(gameBoardBmp, 0, 0, null);
+        canvas.drawBitmap(boardOverlayBmp, 0, 0, null);
 
-        paint.setColor(Color.BLACK);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(boardHeight * 0.01f);
-        float x, y;
-        // draw horizontal lines
-        for (int i = 0; i <= boardSize; i++) {
-            y = i * tileHeight;
-            canvas.drawLine(0, y, boardWidth, y, paint);
-        }
-        // draw vertical lines
-        for (int j = 0; j <= boardSize; j++) {
-            x = j * tileWidth;
-            canvas.drawLine(x, 0, x, boardHeight, paint);
-        }
-
-        paint.setStyle(Paint.Style.FILL);
+        // draw pieces
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
+                // draw player1 piece
                 if (gameState.board[i][j] == 1) {
-                    paint.setColor(Color.WHITE);
-                    canvas.drawRect(j * tileWidth, i * tileHeight, (j + 1) * tileWidth, (i + 1) * tileHeight, paint);
-                } else if (gameState.board[i][j] == 2) {
-                    paint.setColor(Color.GREEN);
-                    canvas.drawRect(j * tileWidth, i * tileHeight, (j + 1) * tileWidth, (i + 1) * tileHeight, paint);
+                    canvas.drawBitmap(player1PieceBmp, tileToCanvasX(j) - player1PieceBmp.getWidth() / 2, tileToCanvasY(i) - player1PieceBmp.getHeight() / 2, null);
+                }
+                // draw player2 piece centered on the canvas location
+                else if (gameState.board[i][j] == 2) {
+                    canvas.drawBitmap(player2PieceBmp, tileToCanvasX(j) - player2PieceBmp.getWidth() / 2, tileToCanvasY(i) - player2PieceBmp.getHeight() / 2, null);
                 }
             }
         }
-
-        canvas.drawBitmap(gameBoardBmp, 0, 0, null);
     }
 
     @Override
     public void onSizeChanged(int w, int h, int oldw, int oldh) {
-        boardWidth = w;
-        boardHeight = h;
-        Log.d("HealthBarView.java", "Size changed to " + boardWidth + "," + boardHeight);
-        tileWidth = boardWidth / boardSize;
-        tileHeight = boardHeight / boardSize;
+        //boardWidth = w;
+        //boardHeight = h;
+        //tileWidth = boardWidth / boardSize;
+        //tileHeight = boardHeight / boardSize;
         // scale image of board to the correct size, but keep it square
-        gameBoardBmp = Bitmap.createScaledBitmap(gameBoardBmp, boardWidth, boardWidth, false);
+        //gameBoardBmp = Bitmap.createScaledBitmap(gameBoardBmp, boardWidth, boardWidth, false);
+        //boardOverlayBmp = Bitmap.createScaledBitmap(boardOverlayBmp, boardWidth, boardWidth, false);
+        // todo: resize pieces
     }
 }

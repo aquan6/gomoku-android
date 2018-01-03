@@ -10,7 +10,12 @@ public class GameState {
     public final static int MAX_BOARD_SIZE = 15;
     private int currentPlayer = 1;
     private int boardSize;
-//Define what is the state of the game
+
+    private BoardType boardType = BoardType.CLASSIC;
+    private PieceType piecePlayer1 = PieceType.CLASSIC_WHITE;
+    private PieceType piecePlayer2 = PieceType.CLASSIC_BLACK;
+
+    //Define what is the state of the game
     public int [][] board;
     //0 = empty, 1 = white, 2=black
     private int numPieces = 0;

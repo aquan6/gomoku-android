@@ -10,6 +10,7 @@
         android:text="Hello World"/>
 
     <andy_stefan.gomoku_android.GameView
+        android:id="@+id/game_view"
         android:layout_width="match_parent"
         android:layout_height="350dp" />
 </LinearLayout>

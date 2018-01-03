@@ -54,6 +54,24 @@ public class GameView extends View {
         player2PieceBmp = BitmapFactory.decodeResource(context.getResources(), player2Piece.getDrawableId());
     }
 
+    // sets board to given boardType, and loads the specified image. TODO: scale to correct size
+    public void setGameBoard(BoardType boardType) {
+        this.boardType = boardType;
+        gameBoardBmp = BitmapFactory.decodeResource(getResources(), boardType.getDrawableId());
+    }
+
+    // set player 1 piece to given PieceType, and load specified image
+    public void setPlayer1Piece(PieceType player1Piece) {
+        this.player1Piece = player1Piece;
+        player1PieceBmp = BitmapFactory.decodeResource(getResources(), player1Piece.getDrawableId());
+    }
+
+    // set player 2 piece to given PieceType, and load specified image
+    public void setPlayer2Piece(PieceType player2Piece) {
+        this.player2Piece = player2Piece;
+        player2PieceBmp = BitmapFactory.decodeResource(getResources(), player2Piece.getDrawableId());
+    }
+
     // convert coordinate on canvas to tile. Returns -1 if no tile was selected
     private int canvasToTileX(float x) {
         if (x < 27 || x > 453) {

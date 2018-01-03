@@ -36,9 +36,16 @@ public class MainScreenActivity extends AppCompatActivity {
         startActivity(new Intent(this, SettingsActivity.class));
     }
 
+    // create intent and populate with configuration for the game. Pass via bundle.
     public void onPlayPressed(View view) {
         Log.d("MainScreen", "Play button pressed");
-        startActivity(new Intent(this, GameActivity.class));
+        Intent game_intent = new Intent(this, GameActivity.class);
+        Bundle b = new Bundle();
+        b.putString(GameActivity.BOARDTYPE_KEY, BoardType.DRAGON_1.toString());
+        b.putString(GameActivity.PLAYER_1_PIECE_TYPE_KEY, PieceType.CLASSIC_WHITE.toString());
+        b.putString(GameActivity.PLAYER_2_PIECE_TYPE_KEY, PieceType.CLASSIC_BLACK.toString());
+        game_intent.putExtras(b);
+        startActivity(game_intent);
     }
 
     public void onStatsPressed(View view) {
